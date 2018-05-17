@@ -16,6 +16,7 @@ class App extends Component {
 
   componentDidMount() {
     axios.get('/api/getFriends').then(res => {
+      console.log(res.data)
       this.setState({ friends: res.data })
     })
   }
@@ -28,11 +29,14 @@ class App extends Component {
   }
 
   deleteFriend(id) {
-    console.log(id)
     axios.delete(`/api/deleteFriend/${id}`).then(res => {
       this.setState({friends: res.data})
     })
   } 
+
+  editFriend(id) {
+    axios.put(`/api/editFriend/`, {id: id, name: this.state.newName, food: this.state.newFood})
+  }
 
   render() {
     console.log(this.state)
@@ -54,9 +58,9 @@ class App extends Component {
         </header>
         <h1>Add Friends</h1>
         <p>Name</p>
-        <input onChange={e => this.setState({nameInput: e.target.value})}/>
+        <input value={this.state.nameInput} onChange={e => this.setState({nameInput: e.target.value})}/>
         <p>Food</p>
-        <input onChange={e => this.setState({foodInput: e.target.value})}/>
+        <input value={this.state.foodInput} onChange={e => this.setState({foodInput: e.target.value})}/>
         <br /><br />
         <button onClick={() => this.addFriend()}>Add</button>
         <div> <hr />
